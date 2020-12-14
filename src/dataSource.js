@@ -49,20 +49,26 @@ let twoMoreData = [
 let threeMoreData = [
 	{
 		name: "br1",
+		sourceData: "master",
 		imageData,
 	},
 	{
 		name: "bond0",
-		type: "minor",
+		sourceData: "minor",
 		imageData,
 	},
 	{
 		name: "bond1",
-		type: "minor",
+		sourceData: "minor",
 		imageData,
 	},
 	{
 		name: "网口4",
+		sourceData: "bond0",
+		imageData,
+	},
+	{
+		name: "网口4-2",
 		sourceData: "bond0",
 		imageData,
 	},
@@ -78,6 +84,11 @@ let threeMoreData = [
 	},
 	{
 		name: "网口7",
+		sourceData: "bond1",
+		imageData,
+	},
+	{
+		name: "网口8",
 		sourceData: "bond1",
 		imageData,
 	},

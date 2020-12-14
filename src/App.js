@@ -62,6 +62,7 @@ class App extends React.Component {
 				let maxIndex = Math.floor(otherArr.length / 2);
 				nodesData[0].x = otherArr[maxIndex].x;
 			}
+
 			nodesData[0].y = ystep;
 			nodesData.map((item) => {
 				linesData.push({
@@ -97,18 +98,19 @@ class App extends React.Component {
 		let linesData = [];
 		let mainArr = [];
 		let otherArr = [];
-		let ystep = 20;
+		let ystep = 25;
 		dataSource.map((item, index) => {
 			const { name, imageData } = item;
 			if (!index) {
 				//主节点
 				nodesData.push({
+					coordType: "master",
 					name,
 					x: 0,
 					y: 0,
 					symbol: "image://" + imageData,
 				});
-			} else if (item.type === "minor") {
+			} else if (item.sourceData === "minor") {
 				//主节点分支
 				mainArr.push(item);
 			} else {
@@ -121,6 +123,7 @@ class App extends React.Component {
 			mainArr.map((item, index) => {
 				nodesData.push({
 					name: item.name,
+					coordType: item.sourceData,
 					x: index ? 50 : -50,
 					y: 0,
 					symbol: "image://" + item.imageData,
@@ -136,34 +139,50 @@ class App extends React.Component {
 		}
 		if (otherArr.length) {
 			//三级节点
-			console.log(nodesData);
-			let letSum = -20;
-			let rightSum = -20;
+			let letSum = -25;
+			let rightSum = -25;
+			let leftArr = [];
+			let rightArr = [];
 			otherArr.map((item) => {
 				if (item.sourceData === "bond0") {
 					item.y = letSum += ystep;
 					nodesData.push({
 						name: item.name,
+						sourceData: item.sourceData,
 						x: -100,
 						y: item.y,
 						symbol: "image://" + item.imageData,
 					});
+					leftArr.push(item);
 				} else {
 					item.y = rightSum += ystep;
 					nodesData.push({
 						name: item.name,
+						sourceData: item.sourceData,
 						x: 100,
 						y: item.y,
 						symbol: "image://" + item.imageData,
 					});
+					rightArr.push(item);
 				}
 			});
+			const middleY = this.getCoord(leftArr, ystep);
+			nodesData.map((item) => {
+				if (item.coordType) {
+					item.y = middleY;
+				}
+				linesData.push({
+					source: item.sourceData,
+					target: item.name,
+				});
+			});
 		}
+
 		let oneOption = {
 			series: [
 				{
 					type: "graph",
-					symbolSize: 40,
+					symbolSize: 30,
 					zoom: 1,
 					label: {
 						show: true,
@@ -175,6 +194,27 @@ class App extends React.Component {
 			],
 		};
 		return oneOption;
+	}
+	//计算坐标
+	getCoord(coordArr, ystep) {
+		let isBoth = coordArr.length % 2 == 0;
+		let middleY = 0;
+		if (isBoth) {
+			//数组双数
+			if (coordArr.length / 2 === 1) {
+				//二个子集
+				middleY = (coordArr[0].y + coordArr[1].y) / 2;
+			} else {
+				let maxIndex = coordArr.length / 2 - 1;
+				let minIndex = maxIndex - 1;
+				middleY = (coordArr[maxIndex].y + coordArr[minIndex].y) / 2 + ystep;
+			}
+		} else {
+			//单数
+			let maxIndex = Math.floor(coordArr.length / 2);
+			middleY = coordArr[maxIndex].y;
+		}
+		return middleY;
 	}
 	initTiledData(dataSource) {
 		let nodesData = [];
@@ -246,7 +286,7 @@ class App extends React.Component {
 					<ReactEchart style={{ height: "100%" }} option={twoOption} />
 				</div>
 				<h3>平铺一对多</h3>
-				<div style={{ height: 200, width: "50%" }}>
+				<div style={{ height: 300, width: "50%" }}>
 					<ReactEchart style={{ height: "100%" }} option={threeOption} />
 				</div>
 			</div>
