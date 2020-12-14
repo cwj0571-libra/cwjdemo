@@ -1,5 +1,5 @@
 import React from "react";
-import { oneMoreData } from "./dataSource";
+import { oneMoreData, twoMoreData, threeMoreData } from "./dataSource";
 import ReactEchart from "echarts-for-react";
 
 class App extends React.Component {
@@ -10,18 +10,19 @@ class App extends React.Component {
 		};
 	}
 	componentDidMount() {}
-	initOneData(oneMoreData) {
+	initOneData(dataSource) {
 		let nodesData = [];
 		let linesData = [];
 		let otherArr = [];
 		let xstep = 50;
-		let ystep = -(xstep / 10) * (oneMoreData.length - 1);
-		oneMoreData.map((item, index) => {
+		let ystep = -(xstep / 10) * (dataSource.length - 1);
+		dataSource.map((item, index) => {
 			const { name, imageData } = item;
 			if (index) {
 				//保存子节点
 				otherArr.push(item);
 			} else {
+				//主节点
 				nodesData.push({
 					name,
 					x: 0,
@@ -30,17 +31,18 @@ class App extends React.Component {
 				});
 			}
 		});
-		let sum = 0;
-		otherArr.map((item) => {
-			item.x = sum += xstep;
-			nodesData.push({
-				name: item.name,
-				x: item.x,
-				y: 0,
-				symbol: "image://" + item.imageData,
-			});
-		});
+
 		if (otherArr.length) {
+			let sum = 0;
+			otherArr.map((item) => {
+				item.x = sum += xstep;
+				nodesData.push({
+					name: item.name,
+					x: item.x,
+					y: 0,
+					symbol: "image://" + item.imageData,
+				});
+			});
 			//存在子集
 			let isBoth = otherArr.length % 2 == 0;
 			if (isBoth) {
@@ -90,13 +92,162 @@ class App extends React.Component {
 		};
 		return oneOption;
 	}
+	initMoreData(dataSource) {
+		let nodesData = [];
+		let linesData = [];
+		let mainArr = [];
+		let otherArr = [];
+		let ystep = 20;
+		dataSource.map((item, index) => {
+			const { name, imageData } = item;
+			if (!index) {
+				//主节点
+				nodesData.push({
+					name,
+					x: 0,
+					y: 0,
+					symbol: "image://" + imageData,
+				});
+			} else if (item.type === "minor") {
+				//主节点分支
+				mainArr.push(item);
+			} else {
+				//分节点三级分支
+				otherArr.push(item);
+			}
+		});
+		if (mainArr.length) {
+			//分节点
+			mainArr.map((item, index) => {
+				nodesData.push({
+					name: item.name,
+					x: index ? 50 : -50,
+					y: 0,
+					symbol: "image://" + item.imageData,
+				});
+			});
+
+			nodesData.map((item) => {
+				linesData.push({
+					source: nodesData[0].name,
+					target: item.name,
+				});
+			});
+		}
+		if (otherArr.length) {
+			//三级节点
+			console.log(nodesData);
+			let letSum = -20;
+			let rightSum = -20;
+			otherArr.map((item) => {
+				if (item.sourceData === "bond0") {
+					item.y = letSum += ystep;
+					nodesData.push({
+						name: item.name,
+						x: -100,
+						y: item.y,
+						symbol: "image://" + item.imageData,
+					});
+				} else {
+					item.y = rightSum += ystep;
+					nodesData.push({
+						name: item.name,
+						x: 100,
+						y: item.y,
+						symbol: "image://" + item.imageData,
+					});
+				}
+			});
+		}
+		let oneOption = {
+			series: [
+				{
+					type: "graph",
+					symbolSize: 40,
+					zoom: 1,
+					label: {
+						show: true,
+						position: "bottom",
+					},
+					data: nodesData,
+					links: linesData,
+				},
+			],
+		};
+		return oneOption;
+	}
+	initTiledData(dataSource) {
+		let nodesData = [];
+		let linesData = [];
+		let otherArr = [];
+		dataSource.map((item, index) => {
+			const { name, imageData } = item;
+			if (index) {
+				//保存子节点
+				otherArr.push(item);
+			} else {
+				//主节点
+				nodesData.push({
+					name,
+					x: 0,
+					y: 0,
+					symbol: "image://" + imageData,
+				});
+			}
+		});
+
+		if (otherArr.length) {
+			otherArr.map((item, index) => {
+				nodesData.push({
+					name: item.name,
+					x: index ? 50 : -50,
+					y: 0,
+					symbol: "image://" + item.imageData,
+				});
+			});
+
+			nodesData.map((item) => {
+				linesData.push({
+					source: nodesData[0].name,
+					target: item.name,
+				});
+			});
+		}
+		let oneOption = {
+			series: [
+				{
+					type: "graph",
+					symbolSize: 40,
+					zoom: 1,
+					label: {
+						show: true,
+						position: "bottom",
+					},
+					data: nodesData,
+					links: linesData,
+				},
+			],
+		};
+		return oneOption;
+	}
+
 	render() {
 		const oneOption = this.initOneData(oneMoreData);
+		const twoOption = this.initTiledData(twoMoreData);
+		const threeOption = this.initMoreData(threeMoreData);
 		return (
 			<div>
-				<h3>网桥配置一对多类</h3>
+				<h3>一对多类</h3>
 				<div style={{ height: 160, width: "50%" }}>
 					<ReactEchart style={{ height: "100%" }} option={oneOption} />
+				</div>
+				<h3>平铺</h3>
+				<div style={{ height: 160, width: "50%" }}>
+					<ReactEchart style={{ height: "100%" }} option={twoOption} />
+				</div>
+				<h3>平铺一对多</h3>
+				<div style={{ height: 200, width: "50%" }}>
+					<ReactEchart style={{ height: "100%" }} option={threeOption} />
 				</div>
 			</div>
 		);

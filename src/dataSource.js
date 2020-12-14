@@ -3,7 +3,7 @@ const imageData =
 
 let oneMoreData = [
 	{
-		name: "网口1",
+		name: "bond",
 		imageData,
 	},
 	{
@@ -19,7 +19,6 @@ let oneMoreData = [
 		imageData,
 	},
 	{
-		x: 0,
 		name: "网口5",
 		imageData,
 	},
@@ -32,5 +31,56 @@ let oneMoreData = [
 		imageData,
 	},
 ];
+let twoMoreData = [
+	{
+		name: "br1",
+		imageData,
+	},
+	{
+		name: "bond0",
+		imageData,
+	},
+	{
+		name: "bond1",
+		imageData,
+	},
+];
 
-export { oneMoreData };
+let threeMoreData = [
+	{
+		name: "br1",
+		imageData,
+	},
+	{
+		name: "bond0",
+		type: "minor",
+		imageData,
+	},
+	{
+		name: "bond1",
+		type: "minor",
+		imageData,
+	},
+	{
+		name: "网口4",
+		sourceData: "bond0",
+		imageData,
+	},
+	{
+		name: "网口5",
+		sourceData: "bond0",
+		imageData,
+	},
+	{
+		name: "网口6",
+		sourceData: "bond1",
+		imageData,
+	},
+	{
+		name: "网口7",
+		sourceData: "bond1",
+		imageData,
+	},
+];
+
+export { oneMoreData, twoMoreData, threeMoreData };
