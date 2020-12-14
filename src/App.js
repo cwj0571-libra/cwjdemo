@@ -9,10 +9,8 @@ class App extends React.Component {
 			oneOption: {},
 		};
 	}
-	componentDidMount() {
-		this.initOneData();
-	}
-	initOneData() {
+	componentDidMount() {}
+	initOneData(oneMoreData) {
 		let nodesData = [];
 		let linesData = [];
 		let otherArr = [];
@@ -43,10 +41,10 @@ class App extends React.Component {
 			});
 		});
 		if (otherArr.length) {
+			//存在子集
 			let isBoth = otherArr.length % 2 == 0;
 			if (isBoth) {
 				//数组双数
-
 				if (otherArr.length / 2 === 1) {
 					//二个子集
 					let middleX = (otherArr[0].x + otherArr[1].x) / 2;
@@ -90,12 +88,10 @@ class App extends React.Component {
 				},
 			],
 		};
-		this.setState({
-			oneOption,
-		});
+		return oneOption;
 	}
 	render() {
-		const { oneOption } = this.state;
+		const oneOption = this.initOneData(oneMoreData);
 		return (
 			<div>
 				<h3>网桥配置一对多类</h3>
