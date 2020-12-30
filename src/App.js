@@ -1,5 +1,5 @@
 import React from "react";
-import { oneMoreData, twoMoreData, threeMoreData } from "./dataSource";
+import { oneMoreData, twoMoreData, threeMoreData, noLineMoreData } from "./dataSource";
 import ReactEchart from "echarts-for-react";
 
 class App extends React.Component {
@@ -195,6 +195,45 @@ class App extends React.Component {
 		};
 		return oneOption;
 	}
+	initNoLineData(dataSource) {
+		let nodesData = [];
+		let xstep = 25;
+		let sum = 0;
+		dataSource.map((item, index) => {
+			const { name, imageData } = item;
+			if (!index) {
+				nodesData.push({
+					name,
+					x: 0,
+					y: 0,
+					symbol: "image://" + imageData,
+				});
+			} else {
+				item.x = sum += xstep;
+				nodesData.push({
+					name,
+					x: item.x,
+					y: 0,
+					symbol: "image://" + item.imageData,
+				});
+			}
+		});
+		let oneOption = {
+			series: [
+				{
+					type: "graph",
+					symbolSize: 40,
+					zoom: 1,
+					label: {
+						show: true,
+						position: "bottom",
+					},
+					data: nodesData,
+				},
+			],
+		};
+		return oneOption;
+	}
 	//计算坐标
 	getCoord(coordArr, ystep) {
 		let isBoth = coordArr.length % 2 == 0;
@@ -216,6 +255,7 @@ class App extends React.Component {
 		}
 		return middleY;
 	}
+
 	initTiledData(dataSource) {
 		let nodesData = [];
 		let linesData = [];
@@ -274,14 +314,19 @@ class App extends React.Component {
 	render() {
 		const oneOption = this.initOneData(oneMoreData);
 		const twoOption = this.initTiledData(twoMoreData);
+		const tileOption = this.initNoLineData(noLineMoreData);
 		const threeOption = this.initMoreData(threeMoreData);
 		return (
 			<div>
+				<h3>平铺</h3>
+				<div style={{ height: 160, width: "50%" }}>
+					<ReactEchart style={{ height: "100%" }} option={tileOption} />
+				</div>
 				<h3>一对多类</h3>
 				<div style={{ height: 160, width: "50%" }}>
 					<ReactEchart style={{ height: "100%" }} option={oneOption} />
 				</div>
-				<h3>平铺</h3>
+				<h3>平铺连线</h3>
 				<div style={{ height: 160, width: "50%" }}>
 					<ReactEchart style={{ height: "100%" }} option={twoOption} />
 				</div>
