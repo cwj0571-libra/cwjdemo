@@ -22,9 +22,7 @@ class App extends React.Component {
 			symbol: "image://" + imageData,
 		});
 		if (dataSource.children && dataSource.children.length) {
-			dataSource.children.map((subItem) => {
-				otherArr.push(subItem);
-			});
+			otherArr = dataSource.children;
 		}
 
 		if (otherArr.length) {
@@ -75,9 +73,7 @@ class App extends React.Component {
 			symbol: "image://" + imageData,
 		});
 		if (dataSource.children && dataSource.children.length) {
-			dataSource.children.map((subItem) => {
-				otherArr.push(subItem);
-			});
+			otherArr = dataSource.children;
 		}
 		if (otherArr.length) {
 			let sum = 0;
@@ -146,25 +142,25 @@ class App extends React.Component {
 		let mainArr = [];
 		let otherArr = [];
 		let ystep = 25;
-		dataSource.map((item, index) => {
-			const { name, imageData } = item;
-			if (!index) {
-				//主节点
-				nodesData.push({
-					coordType: "master",
-					name,
-					x: 0,
-					y: 0,
-					symbol: "image://" + imageData,
-				});
-			} else if (item.sourceData === "minor") {
-				//主节点分支
-				mainArr.push(item);
-			} else {
-				//分节点三级分支
-				otherArr.push(item);
-			}
+		const { name, imageData } = dataSource;
+		nodesData.push({
+			coordType: "master",
+			name,
+			x: 0,
+			y: 0,
+			symbol: "image://" + imageData,
 		});
+		if (dataSource.children && dataSource.children.length) {
+			mainArr = dataSource.children;
+			mainArr.map((subItem) => {
+				if (subItem.children && subItem.children.length) {
+					subItem.children.map((item) => {
+						otherArr.push(item);
+					});
+				}
+			});
+		}
+
 		if (mainArr.length) {
 			//分节点
 			mainArr.map((item, index) => {

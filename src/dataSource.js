@@ -53,52 +53,56 @@ let noLineMoreData = [
 	},
 ];
 
-let threeMoreData = [
-	{
-		name: "br1",
-		sourceData: "master",
-		imageData,
-	},
-	{
-		name: "bond0",
-		sourceData: "minor",
-		imageData,
-	},
-	{
-		name: "bond1",
-		sourceData: "minor",
-		imageData,
-	},
-	{
-		name: "网口4",
-		sourceData: "bond0",
-		imageData,
-	},
-	{
-		name: "网口4-2",
-		sourceData: "bond0",
-		imageData,
-	},
-	{
-		name: "网口5",
-		sourceData: "bond0",
-		imageData,
-	},
-	{
-		name: "网口6",
-		sourceData: "bond1",
-		imageData,
-	},
-	{
-		name: "网口7",
-		sourceData: "bond1",
-		imageData,
-	},
-	{
-		name: "网口8",
-		sourceData: "bond1",
-		imageData,
-	},
-];
+let threeMoreData = {
+	name: "br1",
+	sourceData: "master",
+	imageData,
+	children: [
+		{
+			name: "bond0",
+			sourceData: "minor",
+			imageData,
+			children: [
+				{
+					name: "网口4",
+					sourceData: "bond0",
+					imageData,
+				},
+				{
+					name: "网口4-2",
+					sourceData: "bond0",
+					imageData,
+				},
+				{
+					name: "网口5",
+					sourceData: "bond0",
+					imageData,
+				},
+			],
+		},
+		{
+			name: "bond1",
+			sourceData: "minor",
+			imageData,
+			children: [
+				{
+					name: "网口6",
+					sourceData: "bond1",
+					imageData,
+				},
+				{
+					name: "网口7",
+					sourceData: "bond1",
+					imageData,
+				},
+				{
+					name: "网口8",
+					sourceData: "bond1",
+					imageData,
+				},
+			],
+		},
+	],
+};
 
 export { oneMoreData, twoMoreData, threeMoreData, noLineMoreData };
