@@ -15,23 +15,19 @@ class App extends React.Component {
 		let linesData = [];
 		let otherArr = [];
 		let xstep = 50;
-		let ystep = -(xstep / 10) * (dataSource.length - 1);
-		dataSource.map((item, index) => {
-			const { name, imageData } = item;
-			if (index) {
-				//保存子节点
-				otherArr.push(item);
-			} else {
-				//主节点
-				nodesData.push({
-					name,
-					x: 0,
-					y: 0,
-					symbol: "image://" + imageData,
-				});
-			}
+		let ystep = -(xstep / 10) * ((dataSource.children && dataSource.children.length) || 0);
+		const { name, imageData } = dataSource;
+		nodesData.push({
+			name,
+			x: 0,
+			y: 0,
+			symbol: "image://" + imageData,
 		});
-
+		if (dataSource.children && dataSource.children.length) {
+			dataSource.children.map((subItem) => {
+				otherArr.push(subItem);
+			});
+		}
 		if (otherArr.length) {
 			let sum = 0;
 			otherArr.map((item) => {
