@@ -17,34 +17,22 @@ let oneMoreData = {
 			name: "网口4",
 			imageData,
 		},
+	],
+};
+let twoMoreData = {
+	name: "br1",
+	imageData,
+	children: [
 		{
-			name: "网口5",
+			name: "bond0",
 			imageData,
 		},
 		{
-			name: "网口6",
-			imageData,
-		},
-		{
-			name: "网口7",
+			name: "bond1",
 			imageData,
 		},
 	],
 };
-let twoMoreData = [
-	{
-		name: "br1",
-		imageData,
-	},
-	{
-		name: "bond0",
-		imageData,
-	},
-	{
-		name: "bond1",
-		imageData,
-	},
-];
 
 let noLineMoreData = [
 	{
