@@ -26,6 +26,7 @@ let oneMoreData = {
 let twoMoreData = [
 	{
 		name: "start",
+		type: "start",
 		imageData,
 	},
 	{
@@ -42,6 +43,7 @@ let twoMoreData = [
 	},
 	{
 		name: "end",
+		type: "end",
 		imageData,
 	},
 ];

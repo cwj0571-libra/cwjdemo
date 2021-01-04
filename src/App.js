@@ -191,6 +191,7 @@ class App extends React.Component {
 	}
 	initTiledData(dataSource) {
 		let nodesData = [];
+		let linesData = [];
 		let xstep = 25;
 		let sum = 0;
 		dataSource.map((item, index) => {
@@ -212,25 +213,37 @@ class App extends React.Component {
 				});
 			}
 		});
-
+		for (var i = 0; i < dataSource.length; i++) {
+			if (dataSource[i + 1]) {
+				let isDotted = dataSource[i].type === "start" || dataSource[i + 1].type === "end";
+				linesData.push({
+					source: dataSource[i].name,
+					target: dataSource[i + 1].name,
+					lineStyle: {
+						type: isDotted ? "dotted" : "solid",
+					},
+				});
+			}
+		}
 		let oneOption = {
 			series: [
 				{
 					type: "graph",
 					symbolSize: 40,
 					zoom: 1,
-					edgeSymbol: ["", "arrow"],
+					// edgeSymbol: ["none", "arrow"],
 					label: {
 						show: true,
 						position: "bottom",
 					},
 					data: nodesData,
-					// links: linesData,
+					links: linesData,
 				},
 			],
 		};
 		return oneOption;
 	}
+
 	initNoLineData(dataSource) {
 		let nodesData = [];
 		let xstep = 25;
