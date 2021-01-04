@@ -77,6 +77,7 @@ class App extends React.Component {
 					symbolSize: 40,
 					zoom,
 					data: nodesData,
+					animation: false,
 					label: {
 						show: true,
 						position: "bottom",
@@ -178,6 +179,7 @@ class App extends React.Component {
 					type: "graph",
 					symbolSize: 30,
 					zoom: 1,
+					animation: false,
 					label: {
 						show: true,
 						position: "bottom",
@@ -231,6 +233,7 @@ class App extends React.Component {
 					type: "graph",
 					symbolSize: 40,
 					zoom: 1,
+					animation: false,
 					// edgeSymbol: ["none", "arrow"],
 					label: {
 						show: true,
