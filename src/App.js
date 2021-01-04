@@ -10,55 +10,6 @@ class App extends React.Component {
 		};
 	}
 	componentDidMount() {}
-	initTiledData(dataSource) {
-		let nodesData = [];
-		let linesData = [];
-		let otherArr = [];
-		const { name, imageData } = dataSource;
-		nodesData.push({
-			name,
-			x: 0,
-			y: 0,
-			symbol: "image://" + imageData,
-		});
-		if (dataSource.children && dataSource.children.length) {
-			otherArr = dataSource.children;
-		}
-
-		if (otherArr.length) {
-			otherArr.map((item, index) => {
-				nodesData.push({
-					name: item.name,
-					x: index ? 50 : -50,
-					y: 0,
-					symbol: "image://" + item.imageData,
-				});
-			});
-
-			nodesData.map((item) => {
-				linesData.push({
-					source: nodesData[0].name,
-					target: item.name,
-				});
-			});
-		}
-		let oneOption = {
-			series: [
-				{
-					type: "graph",
-					symbolSize: 40,
-					zoom: 1,
-					label: {
-						show: true,
-						position: "bottom",
-					},
-					data: nodesData,
-					links: linesData,
-				},
-			],
-		};
-		return oneOption;
-	}
 	initOneData(dataSource) {
 		let nodesData = [];
 		let linesData = [];
@@ -116,7 +67,7 @@ class App extends React.Component {
 		}
 		let zoom = 1;
 		let nodeLength = nodesData.length;
-		if (nodeLength < 5) {
+		if (nodeLength <= 5) {
 			zoom = 0.7;
 		}
 		let oneOption = {
@@ -233,6 +184,48 @@ class App extends React.Component {
 					},
 					data: nodesData,
 					links: linesData,
+				},
+			],
+		};
+		return oneOption;
+	}
+	initTiledData(dataSource) {
+		let nodesData = [];
+		let xstep = 25;
+		let sum = 0;
+		dataSource.map((item, index) => {
+			const { name, imageData } = item;
+			if (!index) {
+				nodesData.push({
+					name,
+					x: 0,
+					y: 0,
+					symbol: "image://" + imageData,
+				});
+			} else {
+				item.x = sum += xstep;
+				nodesData.push({
+					name,
+					x: item.x,
+					y: 0,
+					symbol: "image://" + item.imageData,
+				});
+			}
+		});
+
+		let oneOption = {
+			series: [
+				{
+					type: "graph",
+					symbolSize: 40,
+					zoom: 1,
+					edgeSymbol: ["", "arrow"],
+					label: {
+						show: true,
+						position: "bottom",
+					},
+					data: nodesData,
+					// links: linesData,
 				},
 			],
 		};
