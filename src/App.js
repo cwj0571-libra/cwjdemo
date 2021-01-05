@@ -139,7 +139,7 @@ class App extends React.Component {
 			let leftArr = [];
 			let rightArr = [];
 			otherArr.map((item) => {
-				if (item.sourceData === "bond0") {
+				if (item.parentType === "left") {
 					item.y = letSum += ystep;
 					nodesData.push({
 						name: item.name,

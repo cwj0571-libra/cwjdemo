@@ -56,21 +56,25 @@ let threeMoreData = {
 		{
 			name: "bond0",
 			sourceData: "minor",
+			parentType: "left",
 			imageData,
 			children: [
 				{
 					name: "网口4",
 					sourceData: "bond0",
+					parentType: "left",
 					imageData,
 				},
 				{
 					name: "网口4-2",
 					sourceData: "bond0",
+					parentType: "left",
 					imageData,
 				},
 				{
 					name: "网口5",
 					sourceData: "bond0",
+					parentType: "left",
 					imageData,
 				},
 			],
